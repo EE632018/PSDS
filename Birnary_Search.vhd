@@ -35,7 +35,7 @@ architecture Behavioral of Birnary_Search is
     
     type state_type is (idle, check, memory, task1,task2,task3, result, not_found);
     signal state_reg, state_next: state_type;
-    signal srednja_vrednost: std_logic_vector(WIDTH-1 downto 0);
+    signal srednja_vrednost,add1,left1,right1: std_logic_vector(WIDTH-1 downto 0);
     signal key_reg,key_next,left_reg,left_next,right_reg,right_next: std_logic_vector(WIDTH-1 downto 0);
     signal middle_reg,middle_next: unsigned(log2c(SIZE)-1 downto 0);
     signal x: std_logic_vector (WIDTH-1 downto 0);
@@ -58,7 +58,6 @@ begin
                 key_reg <= key_next;
             
             end if;    
-        
         end process;
     
     process(state_reg,start,left_in,right_in,x,key_in) is
@@ -111,26 +110,40 @@ begin
                      left_next<=left_in;
                      right_next<=right_in;           
                 when check=>
-                     
+                     middle_next<=unsigned(srednja_vrednost);
+                     key_next<=key_reg;
+                     left_next<=left_reg;
+                     right_next<=right_reg;
                 when memory=>
-                
+                     mem_data_o<=std_logic_vector(middle_reg);   
+                     x<= data;
+                     key_next<=key_reg;
+                     left_next<=left_reg;
+                     right_next<=right_reg;
                 when task1=>
-                
+                     key_next<=key_reg;
+                     left_next<=left_reg;
+                     right_next<=right_reg;
                 when task2=>
-                
+                     key_next<=key_reg;
+                     left_next<=left_reg;
+                     right_next<=right1;
                 when task3=>
-                
+                     key_next<=key_reg;
+                     left_next<=left1;
+                     right_next<=right_reg;                    
                 when result=>
-                
+                     pos_out<=key_reg;
+                     el_found_out<='1';
                 when not_found=>
-                
+                     el_found_out<='0';
             end case;
         end process;           
         
       --Pomocne funkcije--
-      srednja_vrednost <=  
-        
+      add1 <= std_logic_vector(unsigned(left_reg) + unsigned(right_reg));  
+      srednja_vrednost <= '0' & add1(WIDTH-1 downto 1);  
+      left1<= std_logic_VECTOR(middle_reg - TO_UNSIGNED(1,WIDTH));
+      right1<= std_logic_VECTOR(middle_reg - TO_UNSIGNED(1,WIDTH));
         
 end Behavioral;
-
- 
