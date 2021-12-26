@@ -12,22 +12,22 @@ entity tb_memory is
 --  Port ( );
 generic (
     WIDTH: integer := 8;
-    SIZE: integer := 8);
+    SIZE: integer := 9);
 end tb_memory;
 
 architecture Behavioral of tb_memory is
-    type mem_t is array (0 to 2**log2c(SIZE)-1) of
+    type mem_t is array (0 to 2*log2c(SIZE)-1) of
                                     std_logic_vector(WIDTH-1 downto 0);
-constant X_c:integer:= 9;
+constant X_c:integer:= 7;
 constant MEM_A_CONTENT_c: mem_t :=
-       (std_logic_vector(to_unsigned(0, WIDTH)),
-        std_logic_vector(to_unsigned(1, WIDTH)),
-        std_logic_vector(to_unsigned(2, WIDTH)),
-        std_logic_vector(to_unsigned(3, WIDTH)),
-        std_logic_vector(to_unsigned(4, WIDTH)),
+       (std_logic_vector(to_unsigned(23, WIDTH)),
+        std_logic_vector(to_unsigned(11, WIDTH)),
         std_logic_vector(to_unsigned(5, WIDTH)),
-        std_logic_vector(to_unsigned(6, WIDTH)),
-        std_logic_vector(to_unsigned(7, WIDTH))
+        std_logic_vector(to_unsigned(8, WIDTH)),
+        std_logic_vector(to_unsigned(10, WIDTH)),
+        std_logic_vector(to_unsigned(13, WIDTH)),
+        std_logic_vector(to_unsigned(21, WIDTH)),
+        std_logic_vector(to_unsigned(42, WIDTH))
         --std_logic_vector(to_unsigned(8, WIDTH))
         --std_logic_vector(to_unsigned(9, WIDTH))
         );
@@ -71,7 +71,7 @@ begin
     
     for i in 0 to X_c loop
     adr_out_s <= std_logic_vector(to_unsigned(i, 8));
-    data_s <= std_logic_vector(to_unsigned(i, 8));
+    data_s <= MEM_A_CONTENT_c(i);
     wait for 50 ns;
     end loop;
     
@@ -80,7 +80,7 @@ begin
     wait for 200 ns;
     
     for i in 0 to X_c loop
-    adr_out_s <= std_logic_vector(to_unsigned(i, 8));
+    adr_out_s <= std_logic_vector(to_unsigned(i,8));
     --data_s <= std_logic_vector(to_unsigned(i*X_c, 8));
     wait for 50 ns;
     end loop;
